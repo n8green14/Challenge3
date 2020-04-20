@@ -14,7 +14,21 @@ public class GameController : MonoBehaviour
 
     private bool gameOver;
     private bool restart;
+
+    private BGScroller bgScroller;
+    public bool bgWinScroller;
+    private SFScroller sfScroller;
+    public bool sfWinScroller;
+    private SFScrollerDistant sfScrollerDistant;
+    public bool sfWinScrollerDistant;
+
     
+
+    public AudioSource musicSource;
+    public AudioClip musicClipOne;
+    public AudioClip musicClipTwo;
+    public AudioClip musicClipThree;
+
     public Text restartText;
     public Text gameOverText;
     public Text ScoreText;
@@ -31,6 +45,43 @@ public class GameController : MonoBehaviour
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
+
+        musicSource = GetComponent<AudioSource>();
+        musicSource.clip = musicClipOne;
+        musicSource.volume = 0.5f;
+        musicSource.Play();
+
+        //find BGScroller
+        GameObject bgScrollerObject = GameObject.FindWithTag("BGScroller");
+        if (bgScrollerObject != null)
+        {
+            bgScroller = bgScrollerObject.GetComponent<BGScroller>();
+        }
+        if (bgScroller == null)
+        {
+            Debug.Log("Cannot find 'BGScroller' script");
+        }
+        //find SFScroller
+        GameObject sfScrollerObject = GameObject.FindWithTag("SFScroller");
+        if (sfScrollerObject != null)
+        {
+            sfScroller = sfScrollerObject.GetComponent<SFScroller>();
+        }
+        if (sfScroller == null)
+        {
+            Debug.Log("Cannot find 'SFScroller' script");
+        }
+        //find SFScrollerDistant
+        GameObject sfScrollerDistantObject = GameObject.FindWithTag("SFScrollerDistant");
+        if (sfScrollerDistantObject != null)
+        {
+            sfScrollerDistant = sfScrollerDistantObject.GetComponent<SFScrollerDistant>();
+        }
+        if (sfScrollerDistant == null)
+        {
+            Debug.Log("Cannot find 'SFScrollerDistant' script");
+        }
+        
     }
 
 
@@ -55,6 +106,7 @@ public class GameController : MonoBehaviour
                 restart = true;
                 break;
             }
+            
         }
     }
 
@@ -67,17 +119,27 @@ public class GameController : MonoBehaviour
     void UpdateScore()
     {
         ScoreText.text = "Points: " + score;
-        if (score >= 100)
+        if (score >= 300)
         {
             winText.text = "You win! Game Created by Nathaniel Green.";
+            musicSource.clip = musicClipThree;
+            musicSource.volume = 0.45f;
+            musicSource.Play();
+            bgWinScroller = true;
+            bgScroller.WinScroller(bgWinScroller);
+            sfWinScroller = true;
+            sfScroller.WinScroller(sfWinScroller);
+            sfWinScrollerDistant = true;
+            sfScrollerDistant.WinScroller(sfWinScrollerDistant);
             gameOver = true;
             restart = true;
+            
         }
     }
 
     public void GameOver()
     {
-        if (score >= 100)
+        if (score >= 300)
         {
             winText.text = "You win! Game Created by Nathaniel Green.";
             gameOver = true;
@@ -85,6 +147,9 @@ public class GameController : MonoBehaviour
         }
         else
         gameOverText.text = "Game Over!";
+        musicSource.clip = musicClipTwo;
+        musicSource.volume = 0.6f;
+        musicSource.Play();
         gameOver = true;
     }
 

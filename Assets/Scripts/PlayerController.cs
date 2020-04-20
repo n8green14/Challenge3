@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Boundary
@@ -17,8 +18,11 @@ public class PlayerController : MonoBehaviour
     public Transform shotSpawn;
     public float fireRate;
 
+    public Text shotSpeedText;
+
     public AudioSource musicSource;
 
+    public bool pickup;
     private Rigidbody rb;
     private float nextFire;
 
@@ -26,6 +30,16 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         musicSource = GetComponent<AudioSource>();
+        shotSpeedText.text = "";
+    }
+
+    public void Pickup(bool pickup)
+    {
+        if (pickup == true)
+        {
+            fireRate = 0.1f;
+            shotSpeedText.text = "SHOT SPEED INCREASED!";
+        }
     }
 
     void Update()
