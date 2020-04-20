@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
     void UpdateScore()
     {
         ScoreText.text = "Points: " + score;
-        if (score >= 300)
+        if (score >= 250)
         {
             winText.text = "You win! Game Created by Nathaniel Green.";
             musicSource.clip = musicClipThree;
@@ -139,7 +139,7 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
-        if (score >= 300)
+        if (score >= 250)
         {
             winText.text = "You win! Game Created by Nathaniel Green.";
             gameOver = true;
